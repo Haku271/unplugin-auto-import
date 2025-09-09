@@ -1,9 +1,7 @@
 # unplugin-auto-import
 
 [![NPM version](https://img.shields.io/npm/v/unplugin-auto-import?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-auto-import)
-
-Auto import APIs on-demand for Vite, Webpack, Rspack, Rollup and esbuild. With TypeScript support. Powered by [unplugin](https://github.com/unjs/unplugin).
-
+为 Vite、Webpack、Rspack、Rollup 和 esbuild 按需自动导入 API。支持 TypeScript。由 [unplugin](https://github.com/unjs/unplugin) 提供。
 ---
 
 without
@@ -236,7 +234,7 @@ export default defineConfig({
 
 <br></details>
 
-## Configuration
+## 配置
 
 ```ts
 AutoImport({
