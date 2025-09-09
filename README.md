@@ -238,39 +238,39 @@ export default defineConfig({
 
 ```ts
 AutoImport({
-  // targets to transform
+  // 要转换的目标文件
   include: [
     /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
     /\.vue$/,
     /\.vue\?vue/, // .vue
-    /\.vue\.[tj]sx?\?vue/, // .vue (vue-loader with experimentalInlineMatchResource enabled)
+    /\.vue\.[tj]sx?\?vue/, // .vue（启用 vue-loader 的 experimentalInlineMatchResource）
     /\.md$/, // .md
   ],
 
-  // global imports to register
+  // 要注册的全局导入
   imports: [
-    // presets
+    // 预设
     'vue',
     'vue-router',
-    // custom
+    // 自定义
     {
       '@vueuse/core': [
-        // named imports
+        // 命名导入
         'useMouse', // import { useMouse } from '@vueuse/core',
-        // alias
+        // 别名
         ['useFetch', 'useMyFetch'], // import { useFetch as useMyFetch } from '@vueuse/core',
       ],
       'axios': [
-        // default imports
+        // 默认导入
         ['default', 'axios'], // import { default as axios } from 'axios',
       ],
       '[package-name]': [
         '[import-names]',
-        // alias
+        // 别名
         ['[from]', '[alias]'],
       ],
     },
-    // example type import
+    // 示例类型导入
     {
       from: 'vue-router',
       imports: ['RouteLocationRaw'],
@@ -278,99 +278,98 @@ AutoImport({
     },
   ],
 
-  // Array of strings of regexes that contains imports meant to be filtered out.
+  // 包含需要过滤掉的导入的正则表达式数组
   ignore: [
     'useMouse',
     'useFetch'
   ],
 
-  // Enable auto import by filename for default module exports under directories
+  // 按文件名启用默认模块导出的自动导入
   defaultExportByFilename: false,
 
-  // Options for scanning directories for auto import
+  // 扫描目录以进行自动导入的选项
   dirsScanOptions: {
-    filePatterns: ['*.ts'], // Glob patterns for matching files
-    fileFilter: file => file.endsWith('.ts'), // Filter files
-    types: true // Enable auto import the types under the directories
+    filePatterns: ['*.ts'], // 用于匹配文件的 Glob 模式
+    fileFilter: file => file.endsWith('.ts'), // 过滤文件
+    types: true // 启用目录下的类型自动导入
   },
 
-  // Auto import for module exports under directories
-  // by default it only scan one level of modules under the directory
+  // 目录下模块导出的自动导入
+  // 默认仅扫描目录下的一级模块
   dirs: [
     './hooks',
-    './composables', // only root modules
-    './composables/**', // all nested modules
+    './composables', // 仅根模块
+    './composables/**', // 所有嵌套模块
     // ...
 
     {
       glob: './hooks',
-      types: true // enable import the types
+      types: true // 启用类型导入
     },
     {
       glob: './composables',
-      types: false // If top level dirsScanOptions.types importing enabled, just only disable this directory
+      types: false // 如果顶级的 dirsScanOptions.types 启用了导入，此目录仅禁用类型导入
     }
     // ...
   ],
 
-  // Filepath to generate corresponding .d.ts file.
-  // Defaults to './auto-imports.d.ts' when `typescript` is installed locally.
-  // Set `false` to disable.
+  // 生成对应的 .d.ts 文件的路径
+  // 当本地安装了 `typescript` 时，默认为 './auto-imports.d.ts'
+  // 设置为 `false` 以禁用
   dts: './auto-imports.d.ts',
 
-  // The mode for generating the .d.ts file.
-  // 'overwrite': overwrite the whole existing .d.ts file with the new type definitions.
-  // 'append': only append the new type definitions to the existing .d.ts file, means the existing type definitions will be kept.
-  // Default to 'append'
+  // 生成 .d.ts 文件的模式
+  // 'overwrite': 用新的类型定义覆盖整个现有的 .d.ts 文件
+  // 'append': 仅将新的类型定义追加到现有的 .d.ts 文件，保留现有类型定义
+  // 默认为 'append'
   dtsMode: 'append',
 
-  // Array of strings of regexes that contains imports meant to be ignored during
-  // the declaration file generation. You may find this useful when you need to provide
-  // a custom signature for a function.
+  // 在生成声明文件时，包含需要忽略的导入的正则表达式数组
+  // 当需要为函数提供自定义签名时可能有用
   ignoreDts: [
     'ignoredFunction',
     /^ignore_/
   ],
 
-  // Auto import inside Vue template
-  // see https://github.com/unjs/unimport/pull/15 and https://github.com/unjs/unimport/pull/72
+  // 在 Vue 模板中启用自动导入
+  // 参见 https://github.com/unjs/unimport/pull/15 和 https://github.com/unjs/unimport/pull/72
   vueTemplate: false,
 
-  // Auto import directives inside Vue template
-  // see https://github.com/unjs/unimport/pull/374
+  // 在 Vue 模板中启用指令的自动导入
+  // 参见 https://github.com/unjs/unimport/pull/374
   vueDirectives: undefined,
 
-  // Custom resolvers, compatible with `unplugin-vue-components`
-  // see https://github.com/antfu/unplugin-auto-import/pull/23/
+  // 自定义解析器，兼容 `unplugin-vue-components`
+  // 参见 https://github.com/antfu/unplugin-auto-import/pull/23/
   resolvers: [
     /* ... */
   ],
 
-  // Include auto-imported packages in Vite's `optimizeDeps` options
-  // Recommend to enable
+  // 将自动导入的包包含在 Vite 的 `optimizeDeps` 选项中
+  // 推荐启用
   viteOptimizeDeps: true,
 
-  // Inject the imports at the end of other imports
+  // 在其他导入的末尾注入导入
   injectAtEnd: true,
 
-  // Generate corresponding .eslintrc-auto-import.json file.
-  // eslint globals Docs - https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals
+  // 生成对应的 .eslintrc-auto-import.json 文件
+  // ESLint 全局变量文档 - https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals
   eslintrc: {
-    enabled: false, // Default `false`
-    // provide path ending with `.mjs` or `.cjs` to generate the file with the respective format
-    filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
-    globalsPropValue: true, // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
+    enabled: false, // 默认 `false`
+    // 提供以 `.mjs` 或 `.cjs` 结尾的路径以生成相应格式的文件
+    filepath: './.eslintrc-auto-import.json', // 默认 `./.eslintrc-auto-import.json`
+    globalsPropValue: true, // 默认 `true`，(true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
   },
 
-  // Generate corresponding .biomelintrc-auto-import.json file.
-  // biomejs extends Docs - https://biomejs.dev/guides/how-biome-works/#the-extends-option
+  // 生成对应的 .biomelintrc-auto-import.json 文件
+  // BiomeJS 扩展文档 - https://biomejs.dev/guides/how-biome-works/#the-extends-option
   biomelintrc: {
-    enabled: false, // Default `false`
-    filepath: './.biomelintrc-auto-import.json', // Default `./.biomelintrc-auto-import.json`
+    enabled: false, // 默认 `false`
+    filepath: './.biomelintrc-auto-import.json', // 默认 `./.biomelintrc-auto-import.json`
   },
 
-  // Save unimport items into a JSON file for other tools to consume
-  dumpUnimportItems: './auto-imports.json', // Default `false`
+  // 将 unimport 项保存为 JSON 文件，供其他工具使用
+  dumpUnimportItems: './auto-imports.json', // 默认 `false`
 })
 ```
 
